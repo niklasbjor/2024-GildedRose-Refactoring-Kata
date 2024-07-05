@@ -13,12 +13,16 @@ public abstract class Product {
     }
 
     public void update() {
+        updateQuality();
+        updateSellIn();
+    }
+
+    protected void updateQuality() {
         if (isPastSellByDate()) {
             safelyIncreaseQuality(2);
         } else {
             safelyIncreaseQuality(1);
         }
-        updateSellIn();
     }
 
     private boolean isPastSellByDate() {
@@ -33,7 +37,7 @@ public abstract class Product {
         item.quality = Math.max(item.quality - amount, MIN_QUALITY);
     }
 
-    private void updateSellIn() {
+    protected void updateSellIn() {
         item.sellIn = item.sellIn - 1;
     }
 }

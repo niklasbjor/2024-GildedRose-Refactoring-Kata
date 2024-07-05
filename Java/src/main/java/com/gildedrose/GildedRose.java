@@ -2,6 +2,7 @@ package com.gildedrose;
 
 import com.gildedrose.product.AgedBrie;
 import com.gildedrose.product.Product;
+import com.gildedrose.product.Sulfuras;
 
 class GildedRose {
     public static final String AGED_BRIE = "Aged Brie";
@@ -25,8 +26,7 @@ class GildedRose {
                     updateSellIn(item);
                 }
                 case SULFURAS -> {
-                    updateQualitySulfuras(item);
-                    updateSellIn(item);
+                    updateSulfuras(item);
                 }
                 default -> {
                     updateQualityRegularItem(item);
@@ -50,8 +50,9 @@ class GildedRose {
         product.update();
     }
 
-    private static void updateQualitySulfuras(Item item) {
-        // do nothing
+    private static void updateSulfuras(Item item) {
+        Product product = new Sulfuras(item);
+        product.update();
     }
 
     private static void updateQualityBackstagePasses(Item item) {
