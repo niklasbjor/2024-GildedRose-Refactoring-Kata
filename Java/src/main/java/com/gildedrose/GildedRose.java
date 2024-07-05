@@ -24,7 +24,10 @@ class GildedRose {
                     Product product = ProductFactory.createProduct(item);
                     updateBrie(product);
                 }
-                case BACKSTAGE_PASSES -> updateBackstagePasses(item);
+                case BACKSTAGE_PASSES -> {
+                    Product product = ProductFactory.createProduct(item);
+                    updateBackstagePasses(product);
+                }
                 case SULFURAS -> updateSulfuras(item);
                 default -> updateRegularItem(item);
             }
@@ -45,8 +48,7 @@ class GildedRose {
         product.update();
     }
 
-    private static void updateBackstagePasses(Item item) {
-        Product product = new BackstagePasses(item);
+    private static void updateBackstagePasses(Product product) {
         product.update();
     }
 }
