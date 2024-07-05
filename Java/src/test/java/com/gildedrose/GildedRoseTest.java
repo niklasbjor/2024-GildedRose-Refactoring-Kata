@@ -1,5 +1,6 @@
 package com.gildedrose;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -158,6 +159,52 @@ class GildedRoseTest {
         assertSellInAndQuality(passes2, 6, 50);
         assertSellInAndQuality(passes3, 2, 50);
     }
+
+    @Test
+    @Disabled
+    void conjuredItem_updateQuality_decreasesQualityByTwo() {
+        Item conjuredItem = new Item("Conjured Mana Cake", 3, 10);
+        GildedRose app = new GildedRose(new Item[]{conjuredItem});
+
+        app.updateQuality();
+        assertSellInAndQuality(conjuredItem, 2, 8);
+        app.updateQuality();
+        assertSellInAndQuality(conjuredItem, 1, 6);
+        app.updateQuality();
+        assertSellInAndQuality(conjuredItem, 0, 4);
+    }
+
+    @Test
+    @Disabled
+    void conjuredItemAfterSellByDate_updateQuality_decreasesQualityByFour() {
+        Item conjuredItem = new Item("Conjured Mana Cake", 0, 4);
+        GildedRose app = new GildedRose(new Item[]{conjuredItem});
+
+        app.updateQuality();
+
+        assertSellInAndQuality(conjuredItem, -1, 0);
+    }
+
+    @Test
+    @Disabled
+    void conjuredItem_updateQuality_doesNotGoBelowMinimumQuality() {
+        Item conjuredItem1 = new Item("Conjured Mana Cake", 1, 0);
+        Item conjuredItem2 = new Item("Conjured Mana Cake", 1, 1);
+        Item conjuredItem3 = new Item("Conjured Mana Cake", -1, 0);
+        Item conjuredItem4 = new Item("Conjured Mana Cake", -1, 1);
+        Item conjuredItem5 = new Item("Conjured Mana Cake", -1, 2);
+        Item conjuredItem6 = new Item("Conjured Mana Cake", -1, 3);
+        GildedRose app = new GildedRose(new Item[]{conjuredItem1, conjuredItem2, conjuredItem3, conjuredItem4, conjuredItem5, conjuredItem6});
+
+        app.updateQuality();
+        assertSellInAndQuality(conjuredItem1, 0, 0);
+        assertSellInAndQuality(conjuredItem2, 0, 0);
+        assertSellInAndQuality(conjuredItem3, -2, 0);
+        assertSellInAndQuality(conjuredItem4, -2, 0);
+        assertSellInAndQuality(conjuredItem5, -2, 0);
+        assertSellInAndQuality(conjuredItem6, -2, 0);
+    }
+
 
     private static void assertSellInAndQuality(Item item, int expectedSellIn, int expectedQuality) {
         assertThat(item.sellIn).isEqualTo(expectedSellIn);
