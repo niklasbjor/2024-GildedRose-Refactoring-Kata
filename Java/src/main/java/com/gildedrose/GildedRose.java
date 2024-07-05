@@ -4,6 +4,7 @@ class GildedRose {
     public static final String AGED_BRIE = "Aged Brie";
     public static final String BACKSTAGE_PASSES = "Backstage passes to a TAFKAL80ETC concert";
     public static final String SULFURAS = "Sulfuras, Hand of Ragnaros";
+    public static final String CONJURED_ITEM = "Conjured Mana Cake";
     public static final int MAX_QUALITY = 50;
     public static final int MIN_QUALITY = 0;
 
@@ -19,6 +20,7 @@ class GildedRose {
                 case AGED_BRIE -> updateQualityBrie(item);
                 case BACKSTAGE_PASSES -> updateQualityBackstagePasses(item);
                 case SULFURAS -> updateQualitySulfuras(item);
+                case CONJURED_ITEM -> updateQualityConjuredItem(item);
                 default -> updateQualityRegularItem(item);
             }
 
@@ -55,6 +57,14 @@ class GildedRose {
             safelyIncreaseQuality(item, 3);
         } else {
             item.quality = 0;
+        }
+    }
+
+    private static void updateQualityConjuredItem(Item item) {
+        if (hasSellByDatePassed(item)) {
+            safelyDecreaseQuality(item, 4);
+        } else {
+            safelyDecreaseQuality(item, 2);
         }
     }
 
