@@ -12,7 +12,7 @@ public abstract class Product {
         this.item = item;
     }
 
-    public void update() {
+    public final void update() {
         updateQuality();
         updateSellIn();
     }
