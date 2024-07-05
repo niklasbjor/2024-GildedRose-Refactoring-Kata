@@ -1,5 +1,7 @@
 package com.gildedrose;
 
+import com.gildedrose.product.Product;
+
 class GildedRose {
     public static final String AGED_BRIE = "Aged Brie";
     public static final String BACKSTAGE_PASSES = "Backstage passes to a TAFKAL80ETC concert";
@@ -35,11 +37,8 @@ class GildedRose {
     }
 
     private static void updateQualityBrie(Item item) {
-        if (hasSellByDatePassed(item)) {
-            safelyIncreaseQuality(item, 2);
-        } else {
-            safelyIncreaseQuality(item, 1);
-        }
+        Product product = new Product(item);
+        product.update();
     }
 
     private static void updateQualitySulfuras(Item item) {
