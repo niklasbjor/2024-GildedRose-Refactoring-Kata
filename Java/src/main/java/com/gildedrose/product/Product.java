@@ -18,6 +18,7 @@ public abstract class Product {
         } else {
             safelyIncreaseQuality(1);
         }
+        updateSellIn();
     }
 
     private boolean isPastSellByDate() {
@@ -30,5 +31,9 @@ public abstract class Product {
 
     private void safelyDecreaseQuality(int amount) {
         item.quality = Math.max(item.quality - amount, MIN_QUALITY);
+    }
+
+    private void updateSellIn() {
+        item.sellIn = item.sellIn - 1;
     }
 }

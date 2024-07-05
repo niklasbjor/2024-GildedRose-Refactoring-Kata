@@ -19,13 +19,21 @@ class GildedRose {
     public void updateQuality() {
         for (Item item : items) {
             switch (item.name) {
-                case AGED_BRIE -> updateQualityBrie(item);
-                case BACKSTAGE_PASSES -> updateQualityBackstagePasses(item);
-                case SULFURAS -> updateQualitySulfuras(item);
-                default -> updateQualityRegularItem(item);
+                case AGED_BRIE -> updateBrie(item);
+                case BACKSTAGE_PASSES -> {
+                    updateQualityBackstagePasses(item);
+                    updateSellIn(item);
+                }
+                case SULFURAS -> {
+                    updateQualitySulfuras(item);
+                    updateSellIn(item);
+                }
+                default -> {
+                    updateQualityRegularItem(item);
+                    updateSellIn(item);
+                }
             }
 
-            updateSellIn(item);
         }
     }
 
@@ -37,7 +45,7 @@ class GildedRose {
         }
     }
 
-    private static void updateQualityBrie(Item item) {
+    private static void updateBrie(Item item) {
         Product product = new AgedBrie(item);
         product.update();
     }
