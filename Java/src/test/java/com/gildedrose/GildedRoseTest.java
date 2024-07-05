@@ -7,121 +7,161 @@ import static org.assertj.core.api.Assertions.assertThat;
 class GildedRoseTest {
 
     @Test
-    void regularItem_updateQuality_decrementSellInAndQuality() {
-        Item regularItem = new Item("+5 Dexterity Vest", 8, 8);
-        GildedRose app = new GildedRose(new Item[] {regularItem});
+    void regularItem_updateQuality_decrementsQuality() {
+        Item regularItem = new Item("+5 Dexterity Vest", 3, 6);
+        GildedRose app = new GildedRose(new Item[]{regularItem});
 
         app.updateQuality();
-
-        assertThat(regularItem.sellIn).isEqualTo(7);
-        assertThat(regularItem.quality).isEqualTo(7); // TODO separate sellIn from quality assertions? (check test names afterward)
+        assertSellInAndQuality(regularItem, 2, 5);
+        app.updateQuality();
+        assertSellInAndQuality(regularItem, 1, 4);
+        app.updateQuality();
+        assertSellInAndQuality(regularItem, 0, 3);
     }
 
     @Test
-    void agedBrie_updateQuality_incrementQuality() {
-        Item brie = new Item("Aged Brie", 8, 8);
-        GildedRose app = new GildedRose(new Item[] {brie});
+    void regularItemAfterSellByDate_updateQuality_doubleDegradation() {
+        Item regularItem = new Item("+5 Dexterity Vest", 0, 3);
+        GildedRose app = new GildedRose(new Item[]{regularItem});
 
         app.updateQuality();
 
-        assertThat(brie.sellIn).isEqualTo(7);
-        assertThat(brie.quality).isEqualTo(9);
+        assertSellInAndQuality(regularItem, -1, 1);
+    }
+
+    @Test
+    void regularItem_updateQuality_doesNotGoBelowMinimumQuality() {
+        Item regularItem = new Item("+5 Dexterity Vest", -1, 1);
+        GildedRose app = new GildedRose(new Item[]{regularItem});
+
+        app.updateQuality();
+        assertSellInAndQuality(regularItem, -2, 0);
+        app.updateQuality();
+        assertSellInAndQuality(regularItem, -3, 0);
+    }
+
+    @Test
+    void agedBrie_updateQuality_incrementsQuality() {
+        Item brie = new Item("Aged Brie", 2, 44);
+        GildedRose app = new GildedRose(new Item[]{brie});
+
+        app.updateQuality();
+        assertSellInAndQuality(brie, 1, 45);
+        app.updateQuality();
+        assertSellInAndQuality(brie, 0, 46);
+    }
+
+    @Test
+    void agedBrieAfterSellByDate_updateQuality_doubleIncrementsQuality() {
+        Item brie = new Item("Aged Brie", 0, 46);
+        GildedRose app = new GildedRose(new Item[]{brie});
+
+        app.updateQuality();
+        assertSellInAndQuality(brie, -1, 48);
+        app.updateQuality();
+        assertSellInAndQuality(brie, -2, 50);
+    }
+
+    @Test
+    void agedBrie_updateQuality_doesNotGoAboveMaximumQuality() {
+        Item brie1 = new Item("Aged Brie", -2, 50);
+        Item brie2 = new Item("Aged Brie", 3, 50);
+        Item brie3 = new Item("Aged Brie", -2, 49);
+
+        GildedRose app = new GildedRose(new Item[]{brie1, brie2, brie3});
+
+        app.updateQuality();
+
+        assertSellInAndQuality(brie1, -3, 50);
+        assertSellInAndQuality(brie2, 2, 50);
+        assertSellInAndQuality(brie3, -3, 50);
     }
 
     @Test
     void sulfuras_updateQuality_noChange() {
-        Item sulfuras = new Item("Sulfuras, Hand of Ragnaros", 0, 80);
-        GildedRose app = new GildedRose(new Item[] {sulfuras});
+        Item sulfuras1 = new Item("Sulfuras, Hand of Ragnaros", 0, 80);
+        Item sulfuras2 = new Item("Sulfuras, Hand of Ragnaros", -1, 80);
+        GildedRose app = new GildedRose(new Item[]{sulfuras1, sulfuras2});
 
         app.updateQuality();
 
-        assertThat(sulfuras.sellIn).isEqualTo(0);
-        assertThat(sulfuras.quality).isEqualTo(80);
+        assertSellInAndQuality(sulfuras1, 0, 80);
+        assertSellInAndQuality(sulfuras2, -1, 80);
     }
 
     @Test
-    void backstagePasses_updateQuality_updatesAsExpected() { // TODO bad name
-        Item backstagePasses = new Item("Backstage passes to a TAFKAL80ETC concert", 13, 8);
-        GildedRose app = new GildedRose(new Item[] {backstagePasses});
+    void backstagePassesMoreThanTenDays_updateQuality_incrementsQuality() {
+        Item backstagePasses = new Item("Backstage passes to a TAFKAL80ETC concert", 12, 6);
+        GildedRose app = new GildedRose(new Item[]{backstagePasses});
 
         app.updateQuality();
-
-        assertThat(backstagePasses.sellIn).isEqualTo(12);
-        assertThat(backstagePasses.quality).isEqualTo(9);
-
+        assertSellInAndQuality(backstagePasses, 11, 7);
         app.updateQuality();
-
-        assertThat(backstagePasses.sellIn).isEqualTo(11);
-        assertThat(backstagePasses.quality).isEqualTo(10);
-
-        app.updateQuality();
-
-        assertThat(backstagePasses.sellIn).isEqualTo(10);
-        assertThat(backstagePasses.quality).isEqualTo(11);
-
-        app.updateQuality();
-
-        assertThat(backstagePasses.sellIn).isEqualTo(9);
-        assertThat(backstagePasses.quality).isEqualTo(13);
-
-        app.updateQuality();
-
-        assertThat(backstagePasses.sellIn).isEqualTo(8);
-        assertThat(backstagePasses.quality).isEqualTo(15);
-
-        app.updateQuality();
-
-        assertThat(backstagePasses.sellIn).isEqualTo(7);
-        assertThat(backstagePasses.quality).isEqualTo(17);
-
-        app.updateQuality();
-
-        assertThat(backstagePasses.sellIn).isEqualTo(6);
-        assertThat(backstagePasses.quality).isEqualTo(19);
-
-        app.updateQuality();
-
-        assertThat(backstagePasses.sellIn).isEqualTo(5);
-        assertThat(backstagePasses.quality).isEqualTo(21);
-
-        app.updateQuality();
-
-        assertThat(backstagePasses.sellIn).isEqualTo(4);
-        assertThat(backstagePasses.quality).isEqualTo(24);
-
-        app.updateQuality();
-
-        assertThat(backstagePasses.sellIn).isEqualTo(3);
-        assertThat(backstagePasses.quality).isEqualTo(27);
-
-        app.updateQuality();
-
-        assertThat(backstagePasses.sellIn).isEqualTo(2);
-        assertThat(backstagePasses.quality).isEqualTo(30);
-
-        app.updateQuality();
-
-        assertThat(backstagePasses.sellIn).isEqualTo(1);
-        assertThat(backstagePasses.quality).isEqualTo(33);
-
-        app.updateQuality();
-
-        assertThat(backstagePasses.sellIn).isEqualTo(0);
-        assertThat(backstagePasses.quality).isEqualTo(36);
-
-        app.updateQuality();
-
-        assertThat(backstagePasses.sellIn).isEqualTo(-1);
-        assertThat(backstagePasses.quality).isEqualTo(0);
+        assertSellInAndQuality(backstagePasses, 10, 8);
     }
 
+    @Test
+    void backstagePassesBetweenFiveAndTenDays_updateQuality_increasesQualityByTwo() {
+        Item backstagePasses = new Item("Backstage passes to a TAFKAL80ETC concert", 10, 8);
+        GildedRose app = new GildedRose(new Item[]{backstagePasses});
 
-    // TODO all other items
+        app.updateQuality();
+        assertSellInAndQuality(backstagePasses, 9, 10);
+        app.updateQuality();
+        assertSellInAndQuality(backstagePasses, 8, 12);
+        app.updateQuality();
+        assertSellInAndQuality(backstagePasses, 7, 14);
+        app.updateQuality();
+        assertSellInAndQuality(backstagePasses, 6, 16);
+        app.updateQuality();
+        assertSellInAndQuality(backstagePasses, 5, 18);
+    }
 
-    // TODO boundary (all items) : sellin 0 -> -1
-    // TODO boundary (all items) : min q 0
-    // TODO boundary (brie, passes) : max q 50
+    @Test
+    void backstagePassesLessThanFiveDays_updateQuality_increasesQualityByThree() {
+        Item backstagePasses = new Item("Backstage passes to a TAFKAL80ETC concert", 5, 18);
+        GildedRose app = new GildedRose(new Item[]{backstagePasses});
 
-    // TODO alternative: 1 test per item type, multiple day updates (too complex test setup?)
+        app.updateQuality();
+        assertSellInAndQuality(backstagePasses, 4, 21);
+        app.updateQuality();
+        assertSellInAndQuality(backstagePasses, 3, 24);
+        app.updateQuality();
+        assertSellInAndQuality(backstagePasses, 2, 27);
+        app.updateQuality();
+        assertSellInAndQuality(backstagePasses, 1, 30);
+        app.updateQuality();
+        assertSellInAndQuality(backstagePasses, 0, 33);
+    }
+
+    @Test
+    void backstagePassesAfterSellByDate_updateQuality_qualityDropsToZero() {
+        Item backstagePasses = new Item("Backstage passes to a TAFKAL80ETC concert", 0, 33);
+        GildedRose app = new GildedRose(new Item[]{backstagePasses});
+
+        app.updateQuality();
+
+        assertSellInAndQuality(backstagePasses, -1, 0);
+    }
+
+    @Test
+    void backstagePasses_updateQuality_doesNotGoAboveMaximumQuality() {
+        Item passes1 = new Item("Backstage passes to a TAFKAL80ETC concert", 11, 50);
+        Item passes2 = new Item("Backstage passes to a TAFKAL80ETC concert", 7, 49);
+        Item passes3 = new Item("Backstage passes to a TAFKAL80ETC concert", 3, 48);
+
+        GildedRose app = new GildedRose(new Item[]{passes1, passes2, passes3});
+
+        app.updateQuality();
+
+        assertSellInAndQuality(passes1, 10, 50);
+        assertSellInAndQuality(passes2, 6, 50);
+        assertSellInAndQuality(passes3, 2, 50);
+    }
+
+    private static void assertSellInAndQuality(Item item, int expectedSellIn, int expectedQuality) {
+        assertThat(item.sellIn).isEqualTo(expectedSellIn);
+        assertThat(item.quality).isEqualTo(expectedQuality);
+    }
 
 }
