@@ -30,13 +30,15 @@ class GildedRose {
                     Product product = ProductFactory.createProduct(item);
                     updateSulfuras(product);
                 }
-                default -> updateRegularItem(item);
+                default -> {
+                    Product product = ProductFactory.createProduct(item);
+                    updateRegularItem(product);
+                }
             }
         }
     }
 
-    private static void updateRegularItem(Item item) {
-        Product product = new RegularItem(item);
+    private static void updateRegularItem(Product product) {
         product.update();
     }
 
