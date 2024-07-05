@@ -1,8 +1,8 @@
 package com.gildedrose;
 
-import com.gildedrose.product.AgedBrie;
 import com.gildedrose.product.BackstagePasses;
 import com.gildedrose.product.Product;
+import com.gildedrose.product.ProductFactory;
 import com.gildedrose.product.RegularItem;
 import com.gildedrose.product.Sulfuras;
 
@@ -20,7 +20,10 @@ class GildedRose {
     public void updateQuality() {
         for (Item item : items) {
             switch (item.name) {
-                case AGED_BRIE -> updateBrie(item);
+                case AGED_BRIE -> {
+                    Product product = ProductFactory.createProduct(item);
+                    updateBrie(product);
+                }
                 case BACKSTAGE_PASSES -> updateBackstagePasses(item);
                 case SULFURAS -> updateSulfuras(item);
                 default -> updateRegularItem(item);
@@ -33,8 +36,7 @@ class GildedRose {
         product.update();
     }
 
-    private static void updateBrie(Item item) {
-        Product product = new AgedBrie(item);
+    private static void updateBrie(Product product) {
         product.update();
     }
 
