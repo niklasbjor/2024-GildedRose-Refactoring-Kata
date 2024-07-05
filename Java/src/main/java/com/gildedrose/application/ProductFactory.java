@@ -4,7 +4,6 @@ import com.gildedrose.Item;
 import com.gildedrose.domain.AgedBrie;
 import com.gildedrose.domain.BackstagePasses;
 import com.gildedrose.domain.Product;
-import com.gildedrose.domain.RegularItem;
 import com.gildedrose.domain.Sulfuras;
 
 public class ProductFactory {
@@ -17,7 +16,7 @@ public class ProductFactory {
             case AGED_BRIE -> new AgedBrie(item);
             case SULFURAS -> new Sulfuras(item);
             case BACKSTAGE_PASSES -> new BackstagePasses(item);
-            default -> new RegularItem(item);
+            default -> new Product(item);
         };
     }
 }

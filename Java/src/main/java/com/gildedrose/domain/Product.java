@@ -2,7 +2,7 @@ package com.gildedrose.domain;
 
 import com.gildedrose.Item;
 
-public abstract class Product {
+public class Product {
     public static final int MAX_QUALITY = 50;
     public static final int MIN_QUALITY = 0;
 
@@ -21,7 +21,13 @@ public abstract class Product {
      * Do the update of the "quality" property of the item.
      * To be overridden in each concrete subclass.
      */
-    protected abstract void updateQuality();
+    protected void updateQuality() {
+        if (isPastSellByDate()) {
+            safelyDecreaseQuality(2);
+        } else {
+            safelyDecreaseQuality(1);
+        }
+    }
 
     /**
      * Do the update of the "sellIn" property of the item.
