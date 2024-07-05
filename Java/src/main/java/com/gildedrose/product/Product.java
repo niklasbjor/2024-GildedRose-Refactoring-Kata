@@ -13,23 +13,22 @@ public abstract class Product {
     }
 
     public void update() {
-        if (hasSellByDatePassed(item)) {
-            safelyIncreaseQuality(item, 2);
+        if (isPastSellByDate()) {
+            safelyIncreaseQuality(2);
         } else {
-            safelyIncreaseQuality(item, 1);
+            safelyIncreaseQuality(1);
         }
-
     }
 
-    private static boolean hasSellByDatePassed(Item item) {
+    private boolean isPastSellByDate() {
         return item.sellIn <= 0;
     }
 
-    private static void safelyIncreaseQuality(Item item, int amount) {
+    private void safelyIncreaseQuality(int amount) {
         item.quality = Math.min(item.quality + amount, MAX_QUALITY);
     }
 
-    private static void safelyDecreaseQuality(Item item, int amount) {
+    private void safelyDecreaseQuality(int amount) {
         item.quality = Math.max(item.quality - amount, MIN_QUALITY);
     }
 }
