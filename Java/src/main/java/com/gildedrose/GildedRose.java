@@ -1,6 +1,7 @@
 package com.gildedrose;
 
 import com.gildedrose.product.AgedBrie;
+import com.gildedrose.product.BackstagePasses;
 import com.gildedrose.product.Product;
 import com.gildedrose.product.RegularItem;
 import com.gildedrose.product.Sulfuras;
@@ -22,10 +23,7 @@ class GildedRose {
         for (Item item : items) {
             switch (item.name) {
                 case AGED_BRIE -> updateBrie(item);
-                case BACKSTAGE_PASSES -> {
-                    updateQualityBackstagePasses(item);
-                    updateSellIn(item);
-                }
+                case BACKSTAGE_PASSES -> updateBackstagePasses(item);
                 case SULFURAS -> updateSulfuras(item);
                 default -> updateRegularItem(item);
             }
@@ -47,16 +45,9 @@ class GildedRose {
         product.update();
     }
 
-    private static void updateQualityBackstagePasses(Item item) {
-        if (item.sellIn > 10) {
-            safelyIncreaseQuality(item, 1);
-        } else if (item.sellIn > 5) {
-            safelyIncreaseQuality(item, 2);
-        } else if (item.sellIn > 0) {
-            safelyIncreaseQuality(item, 3);
-        } else {
-            item.quality = 0;
-        }
+    private static void updateBackstagePasses(Item item) {
+        Product product = new BackstagePasses(item);
+        product.update();
     }
 
     private static boolean hasSellByDatePassed(Item item) {

@@ -6,7 +6,7 @@ public abstract class Product {
     public static final int MAX_QUALITY = 50;
     public static final int MIN_QUALITY = 0;
 
-    private final Item item;
+    protected final Item item;
 
     public Product(Item item) {
         this.item = item;
