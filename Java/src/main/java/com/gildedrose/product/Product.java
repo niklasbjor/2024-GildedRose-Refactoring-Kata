@@ -17,7 +17,19 @@ public abstract class Product {
         updateSellIn();
     }
 
+    /**
+     * Do the update of the "quality" property of the item.
+     * To be overridden in each concrete subclass.
+     */
     protected abstract void updateQuality();
+
+    /**
+     * Do the update of the "sellIn" property of the item.
+     * This default behaviour may be overridden in a concrete subclass.
+     */
+    protected void updateSellIn() {
+        item.sellIn = item.sellIn - 1;
+    }
 
     protected boolean isPastSellByDate() {
         return item.sellIn <= 0;
@@ -29,9 +41,5 @@ public abstract class Product {
 
     protected void safelyDecreaseQuality(int amount) {
         item.quality = Math.max(item.quality - amount, MIN_QUALITY);
-    }
-
-    protected void updateSellIn() {
-        item.sellIn = item.sellIn - 1;
     }
 }
