@@ -27,18 +27,18 @@ class GildedRose {
     }
 
     private static void updateQualityRegularItem(Item item) {
-        if (item.sellIn > 0) {
-            safelyDecreaseQuality(item, 1);
-        } else {
+        if (hasSellByDatePassed(item)) {
             safelyDecreaseQuality(item, 2);
+        } else {
+            safelyDecreaseQuality(item, 1);
         }
     }
 
     private static void updateQualityBrie(Item item) {
-        if (item.sellIn > 0) {
-            safelyIncreaseQuality(item, 1);
-        } else {
+        if (hasSellByDatePassed(item)) {
             safelyIncreaseQuality(item, 2);
+        } else {
+            safelyIncreaseQuality(item, 1);
         }
     }
 
@@ -56,6 +56,10 @@ class GildedRose {
         } else {
             item.quality = 0;
         }
+    }
+
+    private static boolean hasSellByDatePassed(Item item) {
+        return item.sellIn <= 0;
     }
 
     private static void safelyIncreaseQuality(Item item, int amount) {
