@@ -37,12 +37,9 @@ class GildedRose {
             } else if (item.name.equals(SULFURAS)) {
                 // do nothing
             } else {
-                if (item.quality > MIN_QUALITY) {
-                    item.quality = item.quality - 1;
-                    if (item.quality > MIN_QUALITY && item.sellIn <= 0) {
-                        item.quality = item.quality - 1;
-                    }
-                }
+                safelyDecrementQuality(item);
+                if (item.sellIn <= 0)
+                    safelyDecrementQuality(item);
             }
 
             if (!item.name.equals(SULFURAS)) {
@@ -54,6 +51,12 @@ class GildedRose {
     private static void safelyIncrementQuality(Item item) {
         if (item.quality < MAX_QUALITY) {
             item.quality = item.quality + 1;
+        }
+    }
+
+    private static void safelyDecrementQuality(Item item) {
+        if (item.quality > MIN_QUALITY) {
+            item.quality = item.quality - 1;
         }
     }
 }
