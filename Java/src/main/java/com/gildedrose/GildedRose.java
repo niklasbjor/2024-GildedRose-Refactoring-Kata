@@ -15,36 +15,48 @@ class GildedRose {
 
     public void updateQuality() {
         for (Item item : items) {
-            if (item.name.equals(AGED_BRIE)) {
-                if (item.sellIn > 0) {
-                    safelyIncreaseQuality(item, 1);
-                } else {
-                    safelyIncreaseQuality(item, 2);
-                }
-
-            } else if (item.name.equals(BACKSTAGE_PASSES)) {
-                if (item.sellIn > 10) {
-                    safelyIncreaseQuality(item, 1);
-                } else if (item.sellIn > 5) {
-                    safelyIncreaseQuality(item, 2);
-                } else if (item.sellIn > 0) {
-                    safelyIncreaseQuality(item, 3);
-                } else {
-                    item.quality = 0;
-                }
-            } else if (item.name.equals(SULFURAS)) {
-                // do nothing
-            } else {
-                if (item.sellIn > 0) {
-                    safelyDecreaseQuality(item, 1);
-                } else {
-                    safelyDecreaseQuality(item, 2);
-                }
+            switch (item.name) {
+                case AGED_BRIE -> updateQualityBrie(item);
+                case BACKSTAGE_PASSES -> updateQualityBackstagePasses(item);
+                case SULFURAS -> updateQualitySulfuras();
+                default -> updateQualityRegularItem(item);
             }
 
             if (!item.name.equals(SULFURAS)) {
                 item.sellIn = item.sellIn - 1;
             }
+        }
+    }
+
+    private static void updateQualityRegularItem(Item item) {
+        if (item.sellIn > 0) {
+            safelyDecreaseQuality(item, 1);
+        } else {
+            safelyDecreaseQuality(item, 2);
+        }
+    }
+
+    private static void updateQualityBrie(Item item) {
+        if (item.sellIn > 0) {
+            safelyIncreaseQuality(item, 1);
+        } else {
+            safelyIncreaseQuality(item, 2);
+        }
+    }
+
+    private static void updateQualitySulfuras() {
+        // do nothing
+    }
+
+    private static void updateQualityBackstagePasses(Item item) {
+        if (item.sellIn > 10) {
+            safelyIncreaseQuality(item, 1);
+        } else if (item.sellIn > 5) {
+            safelyIncreaseQuality(item, 2);
+        } else if (item.sellIn > 0) {
+            safelyIncreaseQuality(item, 3);
+        } else {
+            item.quality = 0;
         }
     }
 
