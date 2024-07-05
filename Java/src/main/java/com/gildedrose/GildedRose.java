@@ -16,30 +16,30 @@ class GildedRose {
     public void updateQuality() {
         for (Item item : items) {
             if (item.name.equals(AGED_BRIE)) {
-                safelyIncreaseQuality(item, 1);
-
-                if (item.sellIn <= 0) {
+                if (item.sellIn > 0) {
                     safelyIncreaseQuality(item, 1);
+                } else {
+                    safelyIncreaseQuality(item, 2);
                 }
 
             } else if (item.name.equals(BACKSTAGE_PASSES)) {
-                safelyIncreaseQuality(item, 1);
-
-                if (item.sellIn < 11)
+                if (item.sellIn > 10) {
                     safelyIncreaseQuality(item, 1);
-
-                if (item.sellIn < 6)
-                    safelyIncreaseQuality(item, 1);
-
-                if (item.sellIn <= 0) {
+                } else if (item.sellIn > 5) {
+                    safelyIncreaseQuality(item, 2);
+                } else if (item.sellIn > 0) {
+                    safelyIncreaseQuality(item, 3);
+                } else {
                     item.quality = 0;
                 }
             } else if (item.name.equals(SULFURAS)) {
                 // do nothing
             } else {
-                safelyDecreaseQuality(item, 1);
-                if (item.sellIn <= 0)
+                if (item.sellIn > 0) {
                     safelyDecreaseQuality(item, 1);
+                } else {
+                    safelyDecreaseQuality(item, 2);
+                }
             }
 
             if (!item.name.equals(SULFURAS)) {
@@ -49,14 +49,10 @@ class GildedRose {
     }
 
     private static void safelyIncreaseQuality(Item item, int amount) {
-        if (item.quality < MAX_QUALITY) {
-            item.quality = item.quality + amount;
-        }
+        item.quality = Math.min(item.quality + amount, MAX_QUALITY);
     }
 
     private static void safelyDecreaseQuality(Item item, int amount) {
-        if (item.quality > MIN_QUALITY) {
-            item.quality = item.quality - amount;
-        }
+        item.quality = Math.max(item.quality - amount, MIN_QUALITY);
     }
 }
