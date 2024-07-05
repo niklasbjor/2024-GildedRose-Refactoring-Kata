@@ -16,20 +16,20 @@ class GildedRose {
     public void updateQuality() {
         for (Item item : items) {
             if (item.name.equals(AGED_BRIE)) {
-                safelyIncrementQuality(item);
+                safelyIncreaseQuality(item, 1);
 
                 if (item.sellIn <= 0) {
-                    safelyIncrementQuality(item);
+                    safelyIncreaseQuality(item, 1);
                 }
 
             } else if (item.name.equals(BACKSTAGE_PASSES)) {
-                safelyIncrementQuality(item);
+                safelyIncreaseQuality(item, 1);
 
                 if (item.sellIn < 11)
-                    safelyIncrementQuality(item);
+                    safelyIncreaseQuality(item, 1);
 
                 if (item.sellIn < 6)
-                    safelyIncrementQuality(item);
+                    safelyIncreaseQuality(item, 1);
 
                 if (item.sellIn <= 0) {
                     item.quality = 0;
@@ -37,9 +37,9 @@ class GildedRose {
             } else if (item.name.equals(SULFURAS)) {
                 // do nothing
             } else {
-                safelyDecrementQuality(item);
+                safelyDecreaseQuality(item, 1);
                 if (item.sellIn <= 0)
-                    safelyDecrementQuality(item);
+                    safelyDecreaseQuality(item, 1);
             }
 
             if (!item.name.equals(SULFURAS)) {
@@ -48,15 +48,15 @@ class GildedRose {
         }
     }
 
-    private static void safelyIncrementQuality(Item item) {
+    private static void safelyIncreaseQuality(Item item, int amount) {
         if (item.quality < MAX_QUALITY) {
-            item.quality = item.quality + 1;
+            item.quality = item.quality + amount;
         }
     }
 
-    private static void safelyDecrementQuality(Item item) {
+    private static void safelyDecreaseQuality(Item item, int amount) {
         if (item.quality > MIN_QUALITY) {
-            item.quality = item.quality - 1;
+            item.quality = item.quality - amount;
         }
     }
 }
