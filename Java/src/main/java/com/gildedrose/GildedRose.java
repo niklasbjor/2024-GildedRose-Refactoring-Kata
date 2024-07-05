@@ -18,7 +18,7 @@ class GildedRose {
             switch (item.name) {
                 case AGED_BRIE -> updateQualityBrie(item);
                 case BACKSTAGE_PASSES -> updateQualityBackstagePasses(item);
-                case SULFURAS -> updateQualitySulfuras();
+                case SULFURAS -> updateQualitySulfuras(item);
                 default -> updateQualityRegularItem(item);
             }
 
@@ -42,7 +42,7 @@ class GildedRose {
         }
     }
 
-    private static void updateQualitySulfuras() {
+    private static void updateQualitySulfuras(Item item) {
         // do nothing
     }
 
