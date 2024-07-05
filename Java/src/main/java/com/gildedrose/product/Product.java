@@ -17,13 +17,7 @@ public abstract class Product {
         updateSellIn();
     }
 
-    protected void updateQuality() {
-        if (isPastSellByDate()) {
-            safelyIncreaseQuality(2);
-        } else {
-            safelyIncreaseQuality(1);
-        }
-    }
+    protected abstract void updateQuality();
 
     protected boolean isPastSellByDate() {
         return item.sellIn <= 0;
