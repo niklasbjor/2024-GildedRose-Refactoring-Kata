@@ -8,14 +8,11 @@ public class ProductFactory {
     public static final String BACKSTAGE_PASSES = "Backstage passes to a TAFKAL80ETC concert";
 
     public static Product createProduct(Item item) {
-        if (item.name.equals(AGED_BRIE)) {
-            return new AgedBrie(item);
-        } else if (item.name.equals(SULFURAS)) {
-        return new Sulfuras(item);
-        } else if (item.name.equals(BACKSTAGE_PASSES)) {
-            return new BackstagePasses(item);
-        } else {
-            return new RegularItem(item);
-        }
+        return switch (item.name) {
+            case AGED_BRIE -> new AgedBrie(item);
+            case SULFURAS -> new Sulfuras(item);
+            case BACKSTAGE_PASSES -> new BackstagePasses(item);
+            default -> new RegularItem(item);
+        };
     }
 }
