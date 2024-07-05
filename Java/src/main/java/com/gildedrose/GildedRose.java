@@ -1,19 +1,21 @@
 package com.gildedrose;
 
-import com.gildedrose.product.Product;
-import com.gildedrose.product.ProductFactory;
+import com.gildedrose.domain.Product;
+import com.gildedrose.application.ProductFactory;
 
 class GildedRose {
 
     Item[] items;
+    private final ProductFactory productFactory;
 
     public GildedRose(Item[] items) {
         this.items = items;
+        this.productFactory = new ProductFactory();
     }
 
     public void updateQuality() {
         for (Item item : items) {
-            Product product = ProductFactory.createProduct(item);
+            Product product = productFactory.createProduct(item);
             product.update();
         }
     }
