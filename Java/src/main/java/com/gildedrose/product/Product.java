@@ -25,15 +25,15 @@ public abstract class Product {
         }
     }
 
-    private boolean isPastSellByDate() {
+    protected boolean isPastSellByDate() {
         return item.sellIn <= 0;
     }
 
-    private void safelyIncreaseQuality(int amount) {
+    protected void safelyIncreaseQuality(int amount) {
         item.quality = Math.min(item.quality + amount, MAX_QUALITY);
     }
 
-    private void safelyDecreaseQuality(int amount) {
+    protected void safelyDecreaseQuality(int amount) {
         item.quality = Math.max(item.quality - amount, MIN_QUALITY);
     }
 

@@ -2,6 +2,7 @@ package com.gildedrose;
 
 import com.gildedrose.product.AgedBrie;
 import com.gildedrose.product.Product;
+import com.gildedrose.product.RegularItem;
 import com.gildedrose.product.Sulfuras;
 
 class GildedRose {
@@ -25,24 +26,15 @@ class GildedRose {
                     updateQualityBackstagePasses(item);
                     updateSellIn(item);
                 }
-                case SULFURAS -> {
-                    updateSulfuras(item);
-                }
-                default -> {
-                    updateQualityRegularItem(item);
-                    updateSellIn(item);
-                }
+                case SULFURAS -> updateSulfuras(item);
+                default -> updateRegularItem(item);
             }
-
         }
     }
 
-    private static void updateQualityRegularItem(Item item) {
-        if (hasSellByDatePassed(item)) {
-            safelyDecreaseQuality(item, 2);
-        } else {
-            safelyDecreaseQuality(item, 1);
-        }
+    private static void updateRegularItem(Item item) {
+        Product product = new RegularItem(item);
+        product.update();
     }
 
     private static void updateBrie(Item item) {
