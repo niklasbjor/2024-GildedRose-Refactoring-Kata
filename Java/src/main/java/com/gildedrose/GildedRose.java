@@ -1,5 +1,6 @@
 package com.gildedrose;
 
+import com.gildedrose.product.AgedBrie;
 import com.gildedrose.product.Product;
 
 class GildedRose {
@@ -37,7 +38,7 @@ class GildedRose {
     }
 
     private static void updateQualityBrie(Item item) {
-        Product product = new Product(item);
+        Product product = new AgedBrie(item);
         product.update();
     }
 

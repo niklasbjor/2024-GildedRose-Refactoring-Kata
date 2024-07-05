@@ -2,7 +2,7 @@ package com.gildedrose.product;
 
 import com.gildedrose.Item;
 
-public class Product {
+public abstract class Product {
     public static final int MAX_QUALITY = 50;
     public static final int MIN_QUALITY = 0;
 
