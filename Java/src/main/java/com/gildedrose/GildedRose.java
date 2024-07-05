@@ -22,9 +22,7 @@ class GildedRose {
                 default -> updateQualityRegularItem(item);
             }
 
-            if (!item.name.equals(SULFURAS)) {
-                item.sellIn = item.sellIn - 1;
-            }
+            updateSellIn(item);
         }
     }
 
@@ -66,5 +64,11 @@ class GildedRose {
 
     private static void safelyDecreaseQuality(Item item, int amount) {
         item.quality = Math.max(item.quality - amount, MIN_QUALITY);
+    }
+
+    private static void updateSellIn(Item item) {
+        if (!item.name.equals(SULFURAS)) {
+            item.sellIn = item.sellIn - 1;
+        }
     }
 }
