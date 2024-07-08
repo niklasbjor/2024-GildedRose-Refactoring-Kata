@@ -3,7 +3,6 @@ package com.gildedrose.application;
 import com.gildedrose.Item;
 import com.gildedrose.domain.Product;
 import com.gildedrose.domain.QualityCalculator;
-import com.gildedrose.domain.SellInCalculator;
 
 public class ProductFactory {
     public static final String AGED_BRIE = "Aged Brie";
@@ -12,8 +11,6 @@ public class ProductFactory {
 
     public static final int MAX_QUALITY = 50;
     public static final int MIN_QUALITY = 0;
-
-    public static final SellInCalculator decrementSellIn = item -> --item.sellIn;
 
     public Product createProduct(Item item) {
         return switch (item.name) {

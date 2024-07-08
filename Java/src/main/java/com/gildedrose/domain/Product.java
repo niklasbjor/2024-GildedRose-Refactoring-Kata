@@ -17,8 +17,8 @@ public class Product {
         this.sellInCalculator = sellInCalculator;
     }
 
-    public static Product.Builder builder(Item item) {
-        return new Builder(item);
+    public static ProductBuilder builder(Item item) {
+        return new ProductBuilder(item);
     }
 
     public final void update() {
@@ -45,7 +45,7 @@ public class Product {
         return item.sellIn <= 0;
     }
 
-    public static class Builder {
+    public static class ProductBuilder {
         public static final QualityCalculator decrementQuality = item -> withinBounds(item.quality - 1);
         public static final SellInCalculator decrementSellIn = item -> item.sellIn - 1;
 
@@ -53,13 +53,13 @@ public class Product {
         private QualityCalculator qualityCalculator;
         private SellInCalculator sellInCalculator;
 
-        private Builder(Item item) {
+        private ProductBuilder(Item item) {
             this.item = item;
             this.qualityCalculator = decrementQuality;
             this.sellInCalculator = decrementSellIn;
         }
 
-        public Builder qualityCalculator(QualityCalculator qualityCalculator) {
+        public ProductBuilder qualityCalculator(QualityCalculator qualityCalculator) {
             this.qualityCalculator = qualityCalculator;
             return this;
         }
