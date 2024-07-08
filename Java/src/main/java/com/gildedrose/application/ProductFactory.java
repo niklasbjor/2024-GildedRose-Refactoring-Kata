@@ -13,12 +13,14 @@ public class ProductFactory {
     public static final int MAX_QUALITY = 50;
     public static final int MIN_QUALITY = 0;
 
+    public static final Function<Item, Integer> decrementSellIn = item -> --item.sellIn;
+
     public Product createProduct(Item item) {
         return switch (item.name) {
-            case AGED_BRIE -> new Product(item, product -> withinBounds(++product.quality), null);
+            case AGED_BRIE -> new Product(item, product -> withinBounds(++product.quality), decrementSellIn);
             case SULFURAS -> new Product(item, product -> product.quality, product -> product.sellIn);
-            case BACKSTAGE_PASSES -> new Product(item, backstagePassCalculator(), null);
-            default -> new Product(item, product -> withinBounds(--product.quality), null);
+            case BACKSTAGE_PASSES -> new Product(item, backstagePassCalculator(), decrementSellIn);
+            default -> new Product(item, product -> withinBounds(--product.quality), decrementSellIn);
         };
     }
 

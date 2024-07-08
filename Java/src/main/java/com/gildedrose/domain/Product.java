@@ -13,7 +13,7 @@ public class Product {
     public Product(Item item, Function<Item, Integer> qualityCalculator, Function<Item, Integer> sellInCalculator) {
         this.item = item;
         this.qualityCalculator = qualityCalculator;
-        this.sellInCalculator = sellInCalculator == null ? product -> --product.sellIn : sellInCalculator;
+        this.sellInCalculator = sellInCalculator;
     }
 
     public final void update() {
