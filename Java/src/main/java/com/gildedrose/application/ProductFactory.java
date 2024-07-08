@@ -21,7 +21,9 @@ public class ProductFactory {
                     .qualityCalculator(product -> withinBounds(++product.quality))
                     .build();
             case SULFURAS -> new Product(item, product -> product.quality, product -> product.sellIn);
-            case BACKSTAGE_PASSES -> new Product(item, backstagePassCalculator(), decrementSellIn);
+            case BACKSTAGE_PASSES -> Product.builder(item)
+                    .qualityCalculator(backstagePassCalculator())
+                    .build();
             default -> Product.builder(item)
                     .build();
         };
