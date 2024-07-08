@@ -9,11 +9,11 @@ public class Product {
     public static final int MIN_QUALITY = 0;
 
     protected final Item item;
-    private final Function<Item, Integer> qualityUpdater;
+    private final Function<Item, Integer> qualityCalculator;
 
-    public Product(Item item, Function<Item, Integer> qualityUpdater) {
+    public Product(Item item, Function<Item, Integer> qualityCalculator) {
         this.item = item;
-        this.qualityUpdater = qualityUpdater;
+        this.qualityCalculator = qualityCalculator;
     }
 
     public final void update() {
@@ -27,10 +27,10 @@ public class Product {
      */
     protected void updateQuality() {
         if (isPastSellByDate()) {
-            safelySetQuality(qualityUpdater.apply(item));
-            safelySetQuality(qualityUpdater.apply(item));
+            safelySetQuality(qualityCalculator.apply(item));
+            safelySetQuality(qualityCalculator.apply(item));
         } else {
-            safelySetQuality(qualityUpdater.apply(item));
+            safelySetQuality(qualityCalculator.apply(item));
         }
     }
 

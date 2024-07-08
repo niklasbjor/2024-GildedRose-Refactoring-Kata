@@ -1,7 +1,6 @@
 package com.gildedrose.application;
 
 import com.gildedrose.Item;
-import com.gildedrose.domain.AgedBrie;
 import com.gildedrose.domain.BackstagePasses;
 import com.gildedrose.domain.Product;
 import com.gildedrose.domain.Sulfuras;
@@ -13,7 +12,7 @@ public class ProductFactory {
 
     public Product createProduct(Item item) {
         return switch (item.name) {
-            case AGED_BRIE -> new AgedBrie(item);
+            case AGED_BRIE -> new Product(item, product -> ++product.quality);
             case SULFURAS -> new Sulfuras(item);
             case BACKSTAGE_PASSES -> new BackstagePasses(item);
             default -> new Product(item, product -> --product.quality);
