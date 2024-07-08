@@ -1,9 +1,10 @@
 package com.gildedrose.application;
 
 import com.gildedrose.Item;
-import com.gildedrose.domain.BackstagePasses;
 import com.gildedrose.domain.Product;
 import com.gildedrose.domain.Sulfuras;
+
+import java.util.function.Function;
 
 public class ProductFactory {
     public static final String AGED_BRIE = "Aged Brie";
@@ -14,8 +15,22 @@ public class ProductFactory {
         return switch (item.name) {
             case AGED_BRIE -> new Product(item, product -> ++product.quality);
             case SULFURAS -> new Sulfuras(item);
-            case BACKSTAGE_PASSES -> new BackstagePasses(item);
+            case BACKSTAGE_PASSES -> new Product(item, backstagePassCalculator());
             default -> new Product(item, product -> --product.quality);
+        };
+    }
+
+    private static Function<Item, Integer> backstagePassCalculator() {
+        return item -> {
+            if (item.sellIn > 10) {
+                return item.quality + 1;
+            } else if (item.sellIn > 5) {
+                return item.quality + 2;
+            } else if (item.sellIn > 0) {
+                return item.quality + 3;
+            } else {
+                return 0;
+            }
         };
     }
 }
