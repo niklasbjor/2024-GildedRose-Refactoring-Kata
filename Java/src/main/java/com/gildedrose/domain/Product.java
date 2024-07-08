@@ -9,7 +9,7 @@ public class Product {
     public static final int MAX_QUALITY = 50;
     public static final int MIN_QUALITY = 0;
 
-    protected final Item item;
+    private final Item item;
     private final Function<Item, Integer> qualityCalculator;
     private final Function<Item, Integer> sellInCalculator;
 
@@ -24,7 +24,7 @@ public class Product {
         updateSellIn();
     }
 
-    protected void updateQuality() {
+    private void updateQuality() {
         if (!item.name.equals(ProductFactory.SULFURAS)) {
             if (isPastSellByDate()) {
                 safelySetQuality(qualityCalculator.apply(item));
@@ -35,15 +35,15 @@ public class Product {
         }
     }
 
-    protected void updateSellIn() {
+    private void updateSellIn() {
         item.sellIn = sellInCalculator.apply(item);
     }
 
-    protected boolean isPastSellByDate() {
+    private boolean isPastSellByDate() {
         return item.sellIn <= 0;
     }
 
-    protected void safelySetQuality(int quality) {
+    private void safelySetQuality(int quality) {
         item.quality = Math.min(Math.max(quality, MIN_QUALITY), MAX_QUALITY); // TODO make readable
     }
 }
