@@ -17,7 +17,10 @@ public class ProductFactory {
             case AGED_BRIE -> Product.builder(item)
                     .qualityCalculator(product -> withinBounds(++product.quality))
                     .build();
-            case SULFURAS -> new Product(item, product -> product.quality, product -> product.sellIn);
+            case SULFURAS -> Product.builder(item)
+                    .qualityCalculator(product -> product.quality)
+                    .sellInCalculator(product -> product.sellIn)
+                    .build();
             case BACKSTAGE_PASSES -> Product.builder(item)
                     .qualityCalculator(backstagePassCalculator())
                     .build();

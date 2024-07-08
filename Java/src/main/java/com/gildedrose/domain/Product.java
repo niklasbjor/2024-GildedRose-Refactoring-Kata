@@ -64,6 +64,11 @@ public class Product {
             return this;
         }
 
+        public ProductBuilder sellInCalculator(SellInCalculator sellInCalculator) {
+            this.sellInCalculator = sellInCalculator;
+            return this;
+        }
+
         public Product build() {
             return new Product(item, qualityCalculator, sellInCalculator);
         }
