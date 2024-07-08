@@ -17,6 +17,10 @@ public class Product {
         this.sellInCalculator = sellInCalculator;
     }
 
+    public static Product.Builder builder(Item item) {
+        return new Builder(item);
+    }
+
     public final void update() {
         updateQuality();
         updateSellIn();
@@ -49,7 +53,7 @@ public class Product {
         private QualityCalculator qualityCalculator;
         private SellInCalculator sellInCalculator;
 
-        public Builder(Item item) {
+        private Builder(Item item) {
             this.item = item;
             this.qualityCalculator = decrementQuality;
             this.sellInCalculator = decrementSellIn;
