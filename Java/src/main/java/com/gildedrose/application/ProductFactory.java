@@ -2,8 +2,8 @@ package com.gildedrose.application;
 
 import com.gildedrose.Item;
 import com.gildedrose.domain.Product;
-
-import java.util.function.Function;
+import com.gildedrose.domain.QualityCalculator;
+import com.gildedrose.domain.SellInCalculator;
 
 public class ProductFactory {
     public static final String AGED_BRIE = "Aged Brie";
@@ -13,7 +13,7 @@ public class ProductFactory {
     public static final int MAX_QUALITY = 50;
     public static final int MIN_QUALITY = 0;
 
-    public static final Function<Item, Integer> decrementSellIn = item -> --item.sellIn;
+    public static final SellInCalculator decrementSellIn = item -> --item.sellIn;
 
     public Product createProduct(Item item) {
         return switch (item.name) {
@@ -24,7 +24,7 @@ public class ProductFactory {
         };
     }
 
-    private static Function<Item, Integer> backstagePassCalculator() {
+    private static QualityCalculator backstagePassCalculator() {
         return item -> {
             if (item.sellIn > 10) {
                 return withinBounds(item.quality + 1);

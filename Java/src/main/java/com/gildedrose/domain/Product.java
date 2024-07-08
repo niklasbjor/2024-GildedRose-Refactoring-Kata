@@ -3,14 +3,12 @@ package com.gildedrose.domain;
 import com.gildedrose.Item;
 import com.gildedrose.application.ProductFactory;
 
-import java.util.function.Function;
-
 public class Product {
     private final Item item;
-    private final Function<Item, Integer> qualityCalculator;
-    private final Function<Item, Integer> sellInCalculator;
+    private final QualityCalculator qualityCalculator;
+    private final SellInCalculator sellInCalculator;
 
-    public Product(Item item, Function<Item, Integer> qualityCalculator, Function<Item, Integer> sellInCalculator) {
+    public Product(Item item, QualityCalculator qualityCalculator, SellInCalculator sellInCalculator) {
         this.item = item;
         this.qualityCalculator = qualityCalculator;
         this.sellInCalculator = sellInCalculator;
