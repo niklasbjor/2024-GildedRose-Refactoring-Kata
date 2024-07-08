@@ -59,6 +59,11 @@ public class Product {
             this.sellInCalculator = decrementSellIn;
         }
 
+        public Builder qualityCalculator(QualityCalculator qualityCalculator) {
+            this.qualityCalculator = qualityCalculator;
+            return this;
+        }
+
         public Product build() {
             return new Product(item, qualityCalculator, sellInCalculator);
         }

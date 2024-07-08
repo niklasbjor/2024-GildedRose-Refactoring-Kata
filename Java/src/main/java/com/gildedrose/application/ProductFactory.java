@@ -17,10 +17,13 @@ public class ProductFactory {
 
     public Product createProduct(Item item) {
         return switch (item.name) {
-            case AGED_BRIE -> new Product(item, product -> withinBounds(++product.quality), decrementSellIn);
+            case AGED_BRIE -> Product.builder(item)
+                    .qualityCalculator(product -> withinBounds(++product.quality))
+                    .build();
             case SULFURAS -> new Product(item, product -> product.quality, product -> product.sellIn);
             case BACKSTAGE_PASSES -> new Product(item, backstagePassCalculator(), decrementSellIn);
-            default -> Product.builder(item).build();
+            default -> Product.builder(item)
+                    .build();
         };
     }
 
