@@ -2,16 +2,16 @@ package com.gildedrose.domain;
 
 import com.gildedrose.Item;
 
-import java.util.function.BiFunction;
+import java.util.function.Function;
 
 public class Product {
     public static final int MAX_QUALITY = 50;
     public static final int MIN_QUALITY = 0;
 
     protected final Item item;
-    private final BiFunction<Integer, Integer, Integer> qualityUpdater;
+    private final Function<Item, Integer> qualityUpdater;
 
-    public Product(Item item, BiFunction<Integer, Integer, Integer> qualityUpdater) {
+    public Product(Item item, Function<Item, Integer> qualityUpdater) {
         this.item = item;
         this.qualityUpdater = qualityUpdater;
     }
@@ -27,9 +27,10 @@ public class Product {
      */
     protected void updateQuality() {
         if (isPastSellByDate()) {
-            safelyDecreaseQuality(2);
+            safelySetQuality(qualityUpdater.apply(item));
+            safelySetQuality(qualityUpdater.apply(item));
         } else {
-            safelySetQuality(qualityUpdater.apply(item.sellIn, item.quality));
+            safelySetQuality(qualityUpdater.apply(item));
         }
     }
 
