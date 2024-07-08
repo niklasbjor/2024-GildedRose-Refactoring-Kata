@@ -10,26 +10,33 @@ public class ProductFactory {
     public static final String SULFURAS = "Sulfuras, Hand of Ragnaros";
     public static final String BACKSTAGE_PASSES = "Backstage passes to a TAFKAL80ETC concert";
 
+    public static final int MAX_QUALITY = 50;
+    public static final int MIN_QUALITY = 0;
+
     public Product createProduct(Item item) {
         return switch (item.name) {
-            case AGED_BRIE -> new Product(item, product -> ++product.quality, null);
+            case AGED_BRIE -> new Product(item, product -> withinBounds(++product.quality), null);
             case SULFURAS -> new Product(item, product -> product.quality, product -> product.sellIn);
             case BACKSTAGE_PASSES -> new Product(item, backstagePassCalculator(), null);
-            default -> new Product(item, product -> --product.quality, null);
+            default -> new Product(item, product -> withinBounds(--product.quality), null);
         };
     }
 
     private static Function<Item, Integer> backstagePassCalculator() {
         return item -> {
             if (item.sellIn > 10) {
-                return item.quality + 1;
+                return withinBounds(item.quality + 1);
             } else if (item.sellIn > 5) {
-                return item.quality + 2;
+                return withinBounds(item.quality + 2);
             } else if (item.sellIn > 0) {
-                return item.quality + 3;
+                return withinBounds(item.quality + 3);
             } else {
                 return 0;
             }
         };
+    }
+
+    private static int withinBounds(int quality) {
+        return Math.min(Math.max(quality, MIN_QUALITY), MAX_QUALITY); // TODO make readable
     }
 }
