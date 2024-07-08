@@ -27,13 +27,11 @@ public class Product {
     }
 
     private void updateQuality() {
-        if (!item.name.equals(ProductFactory.SULFURAS)) {
-            if (isPastSellByDate()) {
-                item.quality = qualityCalculator.apply(item);
-                item.quality = qualityCalculator.apply(item);
-            } else {
-                item.quality = qualityCalculator.apply(item);
-            }
+        if (isPastSellByDate()) {
+            item.quality = qualityCalculator.apply(item);
+            item.quality = qualityCalculator.apply(item);
+        } else {
+            item.quality = qualityCalculator.apply(item);
         }
     }
 
