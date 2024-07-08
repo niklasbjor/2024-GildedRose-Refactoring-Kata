@@ -9,15 +9,13 @@ public class ProductFactory {
     public static final String SULFURAS = "Sulfuras, Hand of Ragnaros";
     public static final String BACKSTAGE_PASSES = "Backstage passes to a TAFKAL80ETC concert";
 
-    public static final int MAX_QUALITY = 50;
-    public static final int MIN_QUALITY = 0;
-
     public Product createProduct(Item item) {
         return switch (item.name) {
             case AGED_BRIE -> Product.builder(item)
-                    .qualityCalculator(product -> withinBounds(++product.quality))
+                    .qualityCalculator(product -> ++product.quality)
                     .build();
             case SULFURAS -> Product.builder(item)
+                    .removeUpperQualityBound()
                     .qualityCalculator(product -> product.quality)
                     .sellInCalculator(product -> product.sellIn)
                     .build();
@@ -32,18 +30,14 @@ public class ProductFactory {
     private static QualityCalculator backstagePassCalculator() {
         return item -> {
             if (item.sellIn > 10) {
-                return withinBounds(item.quality + 1);
+                return item.quality + 1;
             } else if (item.sellIn > 5) {
-                return withinBounds(item.quality + 2);
+                return item.quality + 2;
             } else if (item.sellIn > 0) {
-                return withinBounds(item.quality + 3);
+                return item.quality + 3;
             } else {
                 return 0;
             }
         };
-    }
-
-    private static int withinBounds(int quality) {
-        return Math.clamp(quality, MIN_QUALITY, MAX_QUALITY);
     }
 }
