@@ -13,10 +13,10 @@ public class ProductFactory {
 
     public Product createProduct(Item item) {
         return switch (item.name) {
-            case AGED_BRIE -> new Product(item, product -> ++product.quality);
+            case AGED_BRIE -> new Product(item, product -> ++product.quality, null);
             case SULFURAS -> new Sulfuras(item);
-            case BACKSTAGE_PASSES -> new Product(item, backstagePassCalculator());
-            default -> new Product(item, product -> --product.quality);
+            case BACKSTAGE_PASSES -> new Product(item, backstagePassCalculator(), null);
+            default -> new Product(item, product -> --product.quality, null);
         };
     }
 

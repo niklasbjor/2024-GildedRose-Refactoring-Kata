@@ -10,10 +10,12 @@ public class Product {
 
     protected final Item item;
     private final Function<Item, Integer> qualityCalculator;
+    private final Function<Item, Integer> sellInCalculator;
 
-    public Product(Item item, Function<Item, Integer> qualityCalculator) {
+    public Product(Item item, Function<Item, Integer> qualityCalculator, Function<Item, Integer> sellInCalculator) {
         this.item = item;
         this.qualityCalculator = qualityCalculator;
+        this.sellInCalculator = product -> --product.sellIn;
     }
 
     public final void update() {
@@ -31,7 +33,7 @@ public class Product {
     }
 
     protected void updateSellIn() {
-        item.sellIn = item.sellIn - 1;
+        item.sellIn = sellInCalculator.apply(item);
     }
 
     protected boolean isPastSellByDate() {
