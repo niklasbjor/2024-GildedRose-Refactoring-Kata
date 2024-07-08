@@ -20,7 +20,7 @@ public class ProductFactory {
             case AGED_BRIE -> new Product(item, product -> withinBounds(++product.quality), decrementSellIn);
             case SULFURAS -> new Product(item, product -> product.quality, product -> product.sellIn);
             case BACKSTAGE_PASSES -> new Product(item, backstagePassCalculator(), decrementSellIn);
-            default -> new Product(item, product -> withinBounds(--product.quality), decrementSellIn);
+            default -> new Product.Builder(item).build();
         };
     }
 

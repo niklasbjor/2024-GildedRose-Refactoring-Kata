@@ -3,6 +3,9 @@ package com.gildedrose.domain;
 import com.gildedrose.Item;
 import com.gildedrose.application.ProductFactory;
 
+import static com.gildedrose.application.ProductFactory.MAX_QUALITY;
+import static com.gildedrose.application.ProductFactory.MIN_QUALITY;
+
 public class Product {
     private final Item item;
     private final QualityCalculator qualityCalculator;
@@ -36,5 +39,28 @@ public class Product {
 
     private boolean isPastSellByDate() {
         return item.sellIn <= 0;
+    }
+
+    public static class Builder {
+        public static final QualityCalculator decrementQuality = item -> withinBounds(item.quality - 1);
+        public static final SellInCalculator decrementSellIn = item -> item.sellIn - 1;
+
+        private final Item item;
+        private QualityCalculator qualityCalculator;
+        private SellInCalculator sellInCalculator;
+
+        public Builder(Item item) {
+            this.item = item;
+            this.qualityCalculator = decrementQuality;
+            this.sellInCalculator = decrementSellIn;
+        }
+
+        public Product build() {
+            return new Product(item, qualityCalculator, sellInCalculator);
+        }
+
+        private static int withinBounds(int quality) {
+            return Math.clamp(quality, MIN_QUALITY, MAX_QUALITY); // TODO dedup
+        }
     }
 }
