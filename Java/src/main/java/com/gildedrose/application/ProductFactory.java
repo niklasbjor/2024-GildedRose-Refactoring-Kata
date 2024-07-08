@@ -39,6 +39,6 @@ public class ProductFactory {
     }
 
     private static int withinBounds(int quality) {
-        return Math.min(Math.max(quality, MIN_QUALITY), MAX_QUALITY); // TODO make readable
+        return Math.clamp(quality, MIN_QUALITY, MAX_QUALITY);
     }
 }
