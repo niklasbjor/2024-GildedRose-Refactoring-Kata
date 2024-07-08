@@ -1,7 +1,6 @@
 package com.gildedrose.domain;
 
 import com.gildedrose.Item;
-import com.gildedrose.application.ProductFactory;
 
 import static com.gildedrose.application.ProductFactory.MAX_QUALITY;
 import static com.gildedrose.application.ProductFactory.MIN_QUALITY;
@@ -28,15 +27,15 @@ public class Product {
 
     private void updateQuality() {
         if (isPastSellByDate()) {
-            item.quality = qualityCalculator.apply(item);
-            item.quality = qualityCalculator.apply(item);
+            item.quality = qualityCalculator.calculateNewQuality(item);
+            item.quality = qualityCalculator.calculateNewQuality(item);
         } else {
-            item.quality = qualityCalculator.apply(item);
+            item.quality = qualityCalculator.calculateNewQuality(item);
         }
     }
 
     private void updateSellIn() {
-        item.sellIn = sellInCalculator.apply(item);
+        item.sellIn = sellInCalculator.calculateNewSellIn(item);
     }
 
     private boolean isPastSellByDate() {
