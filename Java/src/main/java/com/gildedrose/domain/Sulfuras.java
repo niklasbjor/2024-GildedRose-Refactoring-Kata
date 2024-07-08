@@ -4,7 +4,7 @@ import com.gildedrose.Item;
 
 public class Sulfuras extends Product {
     public Sulfuras(Item item) {
-        super(item);
+        super(item, null);
     }
 
     @Override

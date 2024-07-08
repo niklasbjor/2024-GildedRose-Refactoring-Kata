@@ -16,7 +16,7 @@ public class ProductFactory {
             case AGED_BRIE -> new AgedBrie(item);
             case SULFURAS -> new Sulfuras(item);
             case BACKSTAGE_PASSES -> new BackstagePasses(item);
-            default -> new Product(item);
+            default -> new Product(item, (sellIn, quality) -> --quality);
         };
     }
 }

@@ -4,7 +4,7 @@ import com.gildedrose.Item;
 
 public class BackstagePasses extends Product {
     public BackstagePasses(Item item) {
-        super(item);
+        super(item, null);
     }
 
     @Override

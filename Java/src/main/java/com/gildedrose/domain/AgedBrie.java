@@ -4,7 +4,7 @@ import com.gildedrose.Item;
 
 public class AgedBrie extends Product {
     public AgedBrie(Item item) {
-        super(item);
+        super(item, null);
     }
 
     @Override
