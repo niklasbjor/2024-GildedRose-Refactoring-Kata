@@ -11,7 +11,7 @@ public class Product {
     private final QualityCalculator qualityCalculator;
     private final SellInCalculator sellInCalculator;
 
-    public Product(Item item, QualityCalculator qualityCalculator, SellInCalculator sellInCalculator) {
+    private Product(Item item, QualityCalculator qualityCalculator, SellInCalculator sellInCalculator) {
         this.item = item;
         this.qualityCalculator = qualityCalculator;
         this.sellInCalculator = sellInCalculator;
