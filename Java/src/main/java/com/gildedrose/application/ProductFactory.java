@@ -2,7 +2,6 @@ package com.gildedrose.application;
 
 import com.gildedrose.Item;
 import com.gildedrose.domain.Product;
-import com.gildedrose.domain.Sulfuras;
 
 import java.util.function.Function;
 
@@ -14,7 +13,7 @@ public class ProductFactory {
     public Product createProduct(Item item) {
         return switch (item.name) {
             case AGED_BRIE -> new Product(item, product -> ++product.quality, null);
-            case SULFURAS -> new Sulfuras(item);
+            case SULFURAS -> new Product(item, product -> product.quality, product -> product.sellIn);
             case BACKSTAGE_PASSES -> new Product(item, backstagePassCalculator(), null);
             default -> new Product(item, product -> --product.quality, null);
         };

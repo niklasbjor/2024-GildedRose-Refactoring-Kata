@@ -1,6 +1,7 @@
 package com.gildedrose.domain;
 
 import com.gildedrose.Item;
+import com.gildedrose.application.ProductFactory;
 
 import java.util.function.Function;
 
@@ -15,7 +16,7 @@ public class Product {
     public Product(Item item, Function<Item, Integer> qualityCalculator, Function<Item, Integer> sellInCalculator) {
         this.item = item;
         this.qualityCalculator = qualityCalculator;
-        this.sellInCalculator = product -> --product.sellIn;
+        this.sellInCalculator = sellInCalculator == null ? product -> --product.sellIn : sellInCalculator;
     }
 
     public final void update() {
@@ -24,11 +25,13 @@ public class Product {
     }
 
     protected void updateQuality() {
-        if (isPastSellByDate()) {
-            safelySetQuality(qualityCalculator.apply(item));
-            safelySetQuality(qualityCalculator.apply(item));
-        } else {
-            safelySetQuality(qualityCalculator.apply(item));
+        if (!item.name.equals(ProductFactory.SULFURAS)) {
+            if (isPastSellByDate()) {
+                safelySetQuality(qualityCalculator.apply(item));
+                safelySetQuality(qualityCalculator.apply(item));
+            } else {
+                safelySetQuality(qualityCalculator.apply(item));
+            }
         }
     }
 
