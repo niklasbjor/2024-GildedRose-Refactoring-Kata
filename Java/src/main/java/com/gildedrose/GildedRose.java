@@ -7,6 +7,7 @@ class GildedRose {
     public static final String CONJURED_ITEM = "Conjured Mana Cake";
     public static final String CONJURED_BRIE = "Conjured Brie";
     public static final String CURSED_ITEM = "Cursed crown";
+    public static final String AGEING_POTION = "Ageing potion";
     public static final int MAX_QUALITY = 50;
     public static final int MIN_QUALITY = 0;
 
@@ -25,6 +26,7 @@ class GildedRose {
                 case CONJURED_ITEM -> updateQualityConjuredItem(item);
                 case CONJURED_BRIE -> updateQualityConjuredBrie(item);
                 case CURSED_ITEM -> updateQualityCursedItem(item);
+                case AGEING_POTION -> updateQualityAgeingPotion(item);
                 default -> updateQualityRegularItem(item);
             }
 
@@ -85,6 +87,18 @@ class GildedRose {
             item.quality = item.quality - 2;
         } else {
             item.quality = item.quality - 1;
+        }
+    }
+
+    private static void updateQualityAgeingPotion(Item item) {
+        if (item.sellIn % 2 == 0) {
+            return;
+        }
+
+        if (hasSellByDatePassed(item)) {
+            safelyDecreaseQuality(item, 2);
+        } else {
+            safelyDecreaseQuality(item, 1);
         }
     }
 

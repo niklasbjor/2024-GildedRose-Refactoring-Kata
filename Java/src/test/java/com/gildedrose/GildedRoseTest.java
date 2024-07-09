@@ -278,6 +278,46 @@ class GildedRoseTest {
         assertSellInAndQuality(cursedItem2, 4, -7);
     }
 
+    /*
+     * Ageing potion: slower degradation: quality degrades only when the sellIn updates to an even value
+     */
+
+    @Test
+    void ageingPotion_updateQuality_decrementsQualityOnEvenSellIn() {
+        Item ageingPotion = new Item("Ageing potion", 3, 5);
+        GildedRose app = new GildedRose(new Item[]{ageingPotion});
+
+        app.updateQuality();
+        assertSellInAndQuality(ageingPotion, 2, 4);
+        app.updateQuality();
+        assertSellInAndQuality(ageingPotion, 1, 4);
+        app.updateQuality();
+        assertSellInAndQuality(ageingPotion, 0, 3);
+    }
+
+    @Test
+    void ageingPotionAfterSellByDate_updateQuality_doubleDegradationOnEvenSellIn() {
+        Item ageingPotion = new Item("Ageing potion", 0, 3);
+        GildedRose app = new GildedRose(new Item[]{ageingPotion});
+
+        app.updateQuality();
+        assertSellInAndQuality(ageingPotion, -1, 3);
+        app.updateQuality();
+        assertSellInAndQuality(ageingPotion, -2, 1);
+    }
+
+    @Test
+    void ageingPotion_updateQuality_doesNotGoBelowMinimumQuality() {
+        Item ageingPotion1 = new Item("Ageing potion", -3, 1);
+        Item ageingPotion2 = new Item("Ageing potion", -3, 2);
+        GildedRose app = new GildedRose(new Item[]{ageingPotion1, ageingPotion2});
+
+        app.updateQuality();
+
+        assertSellInAndQuality(ageingPotion1, -4, 0);
+        assertSellInAndQuality(ageingPotion2, -4, 0);
+    }
+
     private static void assertSellInAndQuality(Item item, int expectedSellIn, int expectedQuality) {
         assertThat(item.sellIn).isEqualTo(expectedSellIn);
         assertThat(item.quality).isEqualTo(expectedQuality);
