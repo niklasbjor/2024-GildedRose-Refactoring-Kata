@@ -25,10 +25,8 @@ public class Product {
     }
 
     private void updateQuality() {
+        item.quality = withinBounds(qualityCalculator.calculateNewQuality(item));
         if (isPastSellByDate()) {
-            item.quality = withinBounds(qualityCalculator.calculateNewQuality(item));
-            item.quality = withinBounds(qualityCalculator.calculateNewQuality(item));
-        } else {
             item.quality = withinBounds(qualityCalculator.calculateNewQuality(item));
         }
     }
