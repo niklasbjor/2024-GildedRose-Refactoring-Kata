@@ -3,6 +3,7 @@ package com.gildedrose.application;
 import com.gildedrose.Item;
 import com.gildedrose.domain.Product;
 import com.gildedrose.domain.QualityCalculator;
+import com.gildedrose.domain.SellInCalculator;
 
 public class ProductFactory {
     public static final String AGED_BRIE = "Aged Brie";
@@ -13,22 +14,38 @@ public class ProductFactory {
     public Product createProduct(Item item) {
         return switch (item.name) {
             case AGED_BRIE -> Product.defaultProduct(item)
-                    .qualityCalculator(product -> ++product.quality)
+                    .qualityCalculator(incrementQuality())
                     .build();
             case SULFURAS -> Product.defaultProduct(item)
                     .removeUpperQualityBound()
-                    .qualityCalculator(product -> product.quality)
-                    .sellInCalculator(product -> product.sellIn)
+                    .qualityCalculator(constantQuality())
+                    .sellInCalculator(constantSellIn())
                     .build();
             case BACKSTAGE_PASSES -> Product.defaultProduct(item)
                     .qualityCalculator(backstagePassCalculator())
                     .build();
             case CONJURED -> Product.defaultProduct(item)
-                    .qualityCalculator(product -> product.quality - 2)
+                    .qualityCalculator(doubleDecrementQuality())
                     .build();
             default -> Product.defaultProduct(item)
                     .build();
         };
+    }
+
+    private static QualityCalculator incrementQuality() {
+        return product -> ++product.quality;
+    }
+
+    private static SellInCalculator constantSellIn() {
+        return product -> product.sellIn;
+    }
+
+    private static QualityCalculator constantQuality() {
+        return product -> product.quality;
+    }
+
+    private static QualityCalculator doubleDecrementQuality() {
+        return product -> product.quality - 2;
     }
 
     private static QualityCalculator backstagePassCalculator() {
