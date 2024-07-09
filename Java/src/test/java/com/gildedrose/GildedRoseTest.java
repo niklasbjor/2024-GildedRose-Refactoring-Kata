@@ -243,6 +243,41 @@ class GildedRoseTest {
         assertSellInAndQuality(conjuredBrie5, -3, 50);
     }
 
+    @Test
+    void cursedItem_updateQuality_decrementsQuality() {
+        Item cursedItem = new Item("Cursed crown", 3, 6);
+        GildedRose app = new GildedRose(new Item[]{cursedItem});
+
+        app.updateQuality();
+        assertSellInAndQuality(cursedItem, 2, 5);
+        app.updateQuality();
+        assertSellInAndQuality(cursedItem, 1, 4);
+        app.updateQuality();
+        assertSellInAndQuality(cursedItem, 0, 3);
+    }
+
+    @Test
+    void cursedItemAfterSellByDate_updateQuality_doubleDegradation() {
+        Item cursedItem = new Item("Cursed crown", 0, 3);
+        GildedRose app = new GildedRose(new Item[]{cursedItem});
+
+        app.updateQuality();
+
+        assertSellInAndQuality(cursedItem, -1, 1);
+    }
+
+    @Test
+    void cursedItem_updateQuality_doesGoBelowMinimumQuality() {
+        Item cursedItem1 = new Item("Cursed crown", -1, 1);
+        Item cursedItem2 = new Item("Cursed crown", 5, -6);
+        GildedRose app = new GildedRose(new Item[]{cursedItem1, cursedItem2});
+
+        app.updateQuality();
+
+        assertSellInAndQuality(cursedItem1, -2, -1);
+        assertSellInAndQuality(cursedItem2, 4, -7);
+    }
+
     private static void assertSellInAndQuality(Item item, int expectedSellIn, int expectedQuality) {
         assertThat(item.sellIn).isEqualTo(expectedSellIn);
         assertThat(item.quality).isEqualTo(expectedQuality);
