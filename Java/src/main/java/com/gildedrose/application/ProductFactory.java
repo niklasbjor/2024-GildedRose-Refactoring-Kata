@@ -11,18 +11,18 @@ public class ProductFactory {
 
     public Product createProduct(Item item) {
         return switch (item.name) {
-            case AGED_BRIE -> Product.builder(item)
+            case AGED_BRIE -> Product.defaultProduct(item)
                     .qualityCalculator(product -> ++product.quality)
                     .build();
-            case SULFURAS -> Product.builder(item)
+            case SULFURAS -> Product.defaultProduct(item)
                     .removeUpperQualityBound()
                     .qualityCalculator(product -> product.quality)
                     .sellInCalculator(product -> product.sellIn)
                     .build();
-            case BACKSTAGE_PASSES -> Product.builder(item)
+            case BACKSTAGE_PASSES -> Product.defaultProduct(item)
                     .qualityCalculator(backstagePassCalculator())
                     .build();
-            default -> Product.builder(item)
+            default -> Product.defaultProduct(item)
                     .build();
         };
     }

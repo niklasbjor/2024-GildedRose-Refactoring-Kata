@@ -18,7 +18,7 @@ public class Product {
         this.sellInCalculator = sellInCalculator;
     }
 
-    public static ProductBuilder builder(Item item) {
+    public static ProductBuilder defaultProduct(Item item) {
         return new ProductBuilder(item);
     }
 
