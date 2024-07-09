@@ -8,7 +8,7 @@ public class AgedBrie extends Product {
     }
 
     @Override
-    protected void updateQuality() {
+    public void updateQuality() {
         if (isPastSellByDate()) {
             safelyIncreaseQuality(2);
         } else {

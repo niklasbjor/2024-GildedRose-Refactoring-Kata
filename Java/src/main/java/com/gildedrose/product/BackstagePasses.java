@@ -8,7 +8,7 @@ public class BackstagePasses extends Product {
     }
 
     @Override
-    protected void updateQuality() {
+    public void updateQuality() {
         if (item.sellIn > 10) {
             safelyIncreaseQuality(1);
         } else if (item.sellIn > 5) {

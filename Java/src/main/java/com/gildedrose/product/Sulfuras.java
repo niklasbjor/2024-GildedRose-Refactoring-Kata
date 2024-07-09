@@ -8,12 +8,12 @@ public class Sulfuras extends Product {
     }
 
     @Override
-    protected void updateQuality() {
+    public void updateQuality() {
         // Sulfuras never has its quality altered
     }
 
     @Override
-    protected void updateSellIn() {
+    public void updateSellIn() {
         // Sulfuras never has to be sold
     }
 }

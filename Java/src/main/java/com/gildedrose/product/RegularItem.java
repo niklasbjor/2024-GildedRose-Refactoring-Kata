@@ -8,7 +8,7 @@ public class RegularItem extends Product {
     }
 
     @Override
-    protected void updateQuality() {
+    public void updateQuality() {
         if (isPastSellByDate()) {
             safelyDecreaseQuality(2);
         } else {

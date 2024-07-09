@@ -2,7 +2,7 @@ package com.gildedrose.product;
 
 import com.gildedrose.Item;
 
-public abstract class Product {
+public abstract class Product implements Updatable {
     public static final int MAX_QUALITY = 50;
     public static final int MIN_QUALITY = 0;
 
@@ -18,16 +18,10 @@ public abstract class Product {
     }
 
     /**
-     * Do the update of the "quality" property of the item.
-     * To be overridden in each concrete subclass.
-     */
-    protected abstract void updateQuality();
-
-    /**
      * Do the update of the "sellIn" property of the item.
      * This default behaviour may be overridden in a concrete subclass.
      */
-    protected void updateSellIn() {
+    public void updateSellIn() {
         item.sellIn = item.sellIn - 1;
     }
 

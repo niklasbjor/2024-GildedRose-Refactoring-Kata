@@ -8,7 +8,7 @@ public class ConjuredItem extends Product {
     }
 
     @Override
-    protected void updateQuality() {
+    public void updateQuality() {
         if (isPastSellByDate()) {
             safelyDecreaseQuality(4);
         } else {
