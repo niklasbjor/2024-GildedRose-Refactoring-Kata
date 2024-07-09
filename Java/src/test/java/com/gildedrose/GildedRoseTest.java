@@ -201,6 +201,47 @@ class GildedRoseTest {
         assertSellInAndQuality(conjuredItem6, -2, 0);
     }
 
+    // Making up some new item types
+    @Test
+    void conjuredBrie_updateQuality_doubleIncrementsQuality() {
+        Item conjuredBrie = new Item("Conjured Brie", 2, 41);
+        GildedRose app = new GildedRose(new Item[]{conjuredBrie});
+
+        app.updateQuality();
+        assertSellInAndQuality(conjuredBrie, 1, 43);
+        app.updateQuality();
+        assertSellInAndQuality(conjuredBrie, 0, 45);
+    }
+
+    @Test
+    void conjuredBrieAfterSellByDate_updateQuality_incrementsQualityByFour() {
+        Item conjuredBrie = new Item("Conjured Brie", 0, 45);
+        GildedRose app = new GildedRose(new Item[]{conjuredBrie});
+
+        app.updateQuality();
+        assertSellInAndQuality(conjuredBrie, -1, 49);
+        app.updateQuality();
+        assertSellInAndQuality(conjuredBrie, -2, 50);
+    }
+
+    @Test
+    void conjuredBrie_updateQuality_doesNotGoAboveMaximumQuality() {
+        Item conjuredBrie1 = new Item("Conjured Brie", -2, 50);
+        Item conjuredBrie2 = new Item("Conjured Brie", 3, 50);
+        Item conjuredBrie3 = new Item("Conjured Brie", -2, 49);
+        Item conjuredBrie4 = new Item("Conjured Brie", -2, 48);
+        Item conjuredBrie5 = new Item("Conjured Brie", -2, 47);
+
+        GildedRose app = new GildedRose(new Item[]{conjuredBrie1, conjuredBrie2, conjuredBrie3, conjuredBrie4, conjuredBrie5});
+
+        app.updateQuality();
+
+        assertSellInAndQuality(conjuredBrie1, -3, 50);
+        assertSellInAndQuality(conjuredBrie2, 2, 50);
+        assertSellInAndQuality(conjuredBrie3, -3, 50);
+        assertSellInAndQuality(conjuredBrie4, -3, 50);
+        assertSellInAndQuality(conjuredBrie5, -3, 50);
+    }
 
     private static void assertSellInAndQuality(Item item, int expectedSellIn, int expectedQuality) {
         assertThat(item.sellIn).isEqualTo(expectedSellIn);
