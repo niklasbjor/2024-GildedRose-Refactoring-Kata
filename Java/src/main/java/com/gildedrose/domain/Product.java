@@ -3,6 +3,9 @@ package com.gildedrose.domain;
 import com.gildedrose.Item;
 
 public class Product {
+    private static final int LOWER_QUALITY_BOUND = 0;
+    private static final int DEFAULT_UPPER_QUALITY_BOUND = 50;
+
     private final Item item;
     private final int upperQualityBound;
     private final QualityCalculator qualityCalculator;
@@ -32,7 +35,7 @@ public class Product {
     }
 
     private int withinBounds(int quality) {
-        return Math.clamp(quality, 0, upperQualityBound);
+        return Math.clamp(quality, LOWER_QUALITY_BOUND, upperQualityBound);
     }
 
     private void updateSellIn() {
@@ -46,7 +49,6 @@ public class Product {
     public static class ProductBuilder {
         public static final QualityCalculator decrementQuality = item -> item.quality - 1;
         public static final SellInCalculator decrementSellIn = item -> item.sellIn - 1;
-        public static final int DEFAULT_UPPER_QUALITY_BOUND = 50;
 
         private final Item item;
         private int upperQualityBound;
