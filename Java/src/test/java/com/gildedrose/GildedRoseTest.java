@@ -1,6 +1,5 @@
 package com.gildedrose;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -161,7 +160,6 @@ class GildedRoseTest {
     }
 
     @Test
-    @Disabled
     void conjuredItem_updateQuality_decreasesQualityByTwo() {
         Item conjuredItem = new Item("Conjured Mana Cake", 3, 10);
         GildedRose app = new GildedRose(new Item[]{conjuredItem});
@@ -175,7 +173,6 @@ class GildedRoseTest {
     }
 
     @Test
-    @Disabled
     void conjuredItemAfterSellByDate_updateQuality_decreasesQualityByFour() {
         Item conjuredItem = new Item("Conjured Mana Cake", 0, 4);
         GildedRose app = new GildedRose(new Item[]{conjuredItem});
@@ -186,7 +183,6 @@ class GildedRoseTest {
     }
 
     @Test
-    @Disabled
     void conjuredItem_updateQuality_doesNotGoBelowMinimumQuality() {
         Item conjuredItem1 = new Item("Conjured Mana Cake", 1, 0);
         Item conjuredItem2 = new Item("Conjured Mana Cake", 1, 1);
