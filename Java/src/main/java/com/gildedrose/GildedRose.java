@@ -1,6 +1,7 @@
 package com.gildedrose;
 
 import java.util.Arrays;
+import java.util.Comparator;
 
 class GildedRose {
     public static final String AGED_BRIE = "Aged Brie";
@@ -22,26 +23,29 @@ class GildedRose {
     }
 
     public void updateQuality() {
-        for (Item item : items) {
-            switch (item.name) {
-                case AGED_BRIE -> updateQualityBrie(item);
-                case BACKSTAGE_PASSES -> updateQualityBackstagePasses(item);
-                case SULFURAS -> updateQualitySulfuras(item);
-                case CONJURED_ITEM -> updateQualityConjuredItem(item);
-                case CONJURED_BRIE -> updateQualityConjuredBrie(item);
-                case CURSED_ITEM -> updateQualityCursedItem(item);
-                case AGEING_POTION -> updateQualityAgeingPotion(item);
-                case INSURANCE -> { /* postpone update until the end */ }
-                default -> updateQualityRegularItem(item);
-            }
+        Arrays.stream(items)
+                .sorted(insurancesLast()) // make sure all other items have updated before updating any insurances
+                .forEach(item -> {
+                    updateItemQuality(item);
+                    updateSellIn(item);
+                });
+    }
 
-            updateSellIn(item);
-        }
+    private static Comparator<Item> insurancesLast() { // Note: inconsistent with equals; use with care!
+        return (item1, item2) -> item1.name.equals(INSURANCE) ? 1 : -1;
+    }
 
-        for (Item item : items) {
-            if (item.name.equals(INSURANCE)) {
-                updateQualityInsurance(item, items);
-            }
+    private void updateItemQuality(Item item) {
+        switch (item.name) {
+            case AGED_BRIE -> updateQualityBrie(item);
+            case BACKSTAGE_PASSES -> updateQualityBackstagePasses(item);
+            case SULFURAS -> updateQualitySulfuras(item);
+            case CONJURED_ITEM -> updateQualityConjuredItem(item);
+            case CONJURED_BRIE -> updateQualityConjuredBrie(item);
+            case CURSED_ITEM -> updateQualityCursedItem(item);
+            case AGEING_POTION -> updateQualityAgeingPotion(item);
+            case INSURANCE -> updateQualityInsurance(item, items);
+            default -> updateQualityRegularItem(item);
         }
     }
 
