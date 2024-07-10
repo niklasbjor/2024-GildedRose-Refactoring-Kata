@@ -2,6 +2,10 @@ package com.gildedrose;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 class GildedRoseTest {
@@ -318,9 +322,121 @@ class GildedRoseTest {
         assertSellInAndQuality(ageingPotion2, -4, 0);
     }
 
+    /*
+     * Valuable item insurance:
+     * Before the sell by date: its quality equals the total amount of items in the inventory with a quality of 30 or higher (excluding other insurance items).
+     * After the sell by date: quality drops to 0
+     */
+
+    @Test
+    void insuranceWithNoValuableItems_updateQuality_qualityIsZero() {
+        Item insurance = new Item("Valuable item insurance", 10, 0);
+        GildedRose app = new GildedRose(new Item[]{
+                insurance,
+                new Item("+5 Dexterity Vest", 10, 10)
+        });
+
+        app.updateQuality();
+
+        assertSellInAndQuality(insurance, 9, 0);
+    }
+
+    @Test
+    void insuranceWithOneValuableItem_updateQuality_qualityIsOne() {
+        Item insurance = new Item("Valuable item insurance", 10, 0);
+        GildedRose app = new GildedRose(new Item[]{
+                insurance,
+                new Item("+5 Dexterity Vest", 10, 35)
+        });
+
+        app.updateQuality();
+
+        assertSellInAndQuality(insurance, 9, 1);
+    }
+
+    @Test
+    void insuranceWithFiveValuableItems_updateQuality_qualityIsFive() {
+        Item insurance = new Item("Valuable item insurance", 10, 0);
+        GildedRose app = new GildedRose(new Item[]{
+                insurance,
+                new Item("+5 Dexterity Vest", 10, 35),
+                new Item("+5 Dexterity Vest", 10, 35),
+                new Item("+5 Dexterity Vest", 10, 35),
+                new Item("+5 Dexterity Vest", 10, 35),
+                new Item("+5 Dexterity Vest", 10, 35)
+        });
+
+        app.updateQuality();
+
+        assertSellInAndQuality(insurance, 9, 5);
+    }
+
+    @Test
+    void insuranceWithOneItemThatDegradesToNotValuable_updateQuality_qualityIsZero() {
+        Item insurance = new Item("Valuable item insurance", 10, 0);
+        GildedRose app = new GildedRose(new Item[]{
+                insurance,
+                new Item("+5 Dexterity Vest", 10, 30)
+        });
+
+        app.updateQuality();
+
+        assertSellInAndQuality(insurance, 9, 0);
+    }
+
+    @Test
+    void insuranceWithOneItemThatUpgradesToValuable_updateQuality_qualityIsOne() {
+        Item insurance = new Item("Valuable item insurance", 10, 0);
+        GildedRose app = new GildedRose(new Item[]{
+                insurance,
+                new Item("Aged Brie", 10, 29)
+        });
+
+        app.updateQuality();
+
+        assertSellInAndQuality(insurance, 9, 1);
+    }
+
+    @Test
+    void insuranceAfterSellByDate_updateQuality_qualityDropsToZero() {
+        Item insurance = new Item("Valuable item insurance", 0, 33);
+        GildedRose app = new GildedRose(new Item[]{
+                insurance,
+                new Item("+5 Dexterity Vest", 10, 35),
+                new Item("+5 Dexterity Vest", 10, 35),
+                new Item("+5 Dexterity Vest", 10, 35)
+        });
+
+        app.updateQuality();
+
+        assertSellInAndQuality(insurance, -1, 0);
+    }
+
+    @Test
+    void multipleInsurances_updateQuality_qualityDropsToZero() {
+        Item insurance1 = new Item("Valuable item insurance", 10, 0);
+        Item insurance2 = new Item("Valuable item insurance", 10, 0);
+        Item[] inventory = Stream.concat(
+                        Stream.of(insurance1, insurance2),
+                        fortyValuableVests().stream())
+                .toArray(Item[]::new);
+        GildedRose app = new GildedRose(inventory);
+
+        app.updateQuality();
+
+        assertSellInAndQuality(insurance1, 9, 40);
+        assertSellInAndQuality(insurance2, 9, 40);
+    }
+
     private static void assertSellInAndQuality(Item item, int expectedSellIn, int expectedQuality) {
         assertThat(item.sellIn).isEqualTo(expectedSellIn);
         assertThat(item.quality).isEqualTo(expectedQuality);
+    }
+
+    private static List<Item> fortyValuableVests() {
+        return IntStream.range(0, 40)
+                .mapToObj(i -> new Item("+5 Dexterity Vest", 10, 50))
+                .toList();
     }
 
 }

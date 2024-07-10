@@ -1,5 +1,7 @@
 package com.gildedrose;
 
+import java.util.Arrays;
+
 class GildedRose {
     public static final String AGED_BRIE = "Aged Brie";
     public static final String BACKSTAGE_PASSES = "Backstage passes to a TAFKAL80ETC concert";
@@ -8,6 +10,8 @@ class GildedRose {
     public static final String CONJURED_BRIE = "Conjured Brie";
     public static final String CURSED_ITEM = "Cursed crown";
     public static final String AGEING_POTION = "Ageing potion";
+    public static final String INSURANCE = "Valuable item insurance";
+
     public static final int MAX_QUALITY = 50;
     public static final int MIN_QUALITY = 0;
 
@@ -27,10 +31,17 @@ class GildedRose {
                 case CONJURED_BRIE -> updateQualityConjuredBrie(item);
                 case CURSED_ITEM -> updateQualityCursedItem(item);
                 case AGEING_POTION -> updateQualityAgeingPotion(item);
+                case INSURANCE -> { /* postpone update until the end */ }
                 default -> updateQualityRegularItem(item);
             }
 
             updateSellIn(item);
+        }
+
+        for (Item item : items) {
+            if (item.name.equals(INSURANCE)) {
+                updateQualityInsurance(item, items);
+            }
         }
     }
 
@@ -99,6 +110,18 @@ class GildedRose {
             safelyDecreaseQuality(item, 2);
         } else {
             safelyDecreaseQuality(item, 1);
+        }
+    }
+
+    private static void updateQualityInsurance(Item insurance, Item[] items) {
+        if (hasSellByDatePassed(insurance)) {
+            insurance.quality = 0;
+        } else {
+            long amountOfValuableItems = Arrays.stream(items)
+                    .filter(item -> !item.name.equals(INSURANCE))
+                    .filter(item -> item.quality >= 30)
+                    .count();
+            insurance.quality = Math.toIntExact(amountOfValuableItems);
         }
     }
 
